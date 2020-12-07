@@ -1,0 +1,22 @@
+body{
+	background-color: #eeeeee;
+}
+
+nav{
+	background-color: #d13559;
+}
+
+.container{
+	padding-top: 20px;
+}
+
+.card{
+	padding: 0;
+	border: solid 5px #eeeeee;
+	border-radius: 20px;
+	overflow: hidden;
+}
+
+.card img{
+/*	height: 310px;*/
+}

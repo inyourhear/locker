@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.locker.mapper.LocOpenscopeMapper">
+    
+    <resultMap type="LocOpenscope" id="LocOpenscopeResult">
+        <result property="openscopeId"    column="openscope_id"    />
+        <result property="openscopeContainerId"    column="openscope_container_id"    />
+        <result property="openscopeRuletableId"    column="openscope_ruletable_id"    />
+        <result property="openscopeRuleId"    column="openscope_rule_id"    />
+    </resultMap>
+
+    <sql id="selectLocOpenscopeVo">
+        select openscope_id, openscope_container_id, openscope_ruletable_id, openscope_rule_id from loc_openscope
+    </sql>
+
+    <select id="selectLocOpenscopeList" parameterType="LocOpenscope" resultMap="LocOpenscopeResult">
+        <include refid="selectLocOpenscopeVo"/>
+        <where>  
+            <if test="openscopeId != null "> and openscope_id = #{openscopeId}</if>
+            <if test="openscopeContainerId != null "> and openscope_container_id = #{openscopeContainerId}</if>
+            <if test="openscopeRuletableId != null "> and openscope_ruletable_id = #{openscopeRuletableId}</if>
+            <if test="openscopeRuleId != null "> and openscope_rule_id = #{openscopeRuleId}</if>
+        </where>
+    </select>
+    
+    <select id="selectLocOpenscopeById" parameterType="Long" resultMap="LocOpenscopeResult">
+        <include refid="selectLocOpenscopeVo"/>
+        where openscope_id = #{openscopeId}
+    </select>
+        
+    <insert id="insertLocOpenscope" parameterType="LocOpenscope" useGeneratedKeys="true" keyProperty="openscopeId">
+        insert into loc_openscope
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="openscopeContainerId != null">openscope_container_id,</if>
+            <if test="openscopeRuletableId != null">openscope_ruletable_id,</if>
+            <if test="openscopeRuleId != null">openscope_rule_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="openscopeContainerId != null">#{openscopeContainerId},</if>
+            <if test="openscopeRuletableId != null">#{openscopeRuletableId},</if>
+            <if test="openscopeRuleId != null">#{openscopeRuleId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLocOpenscope" parameterType="LocOpenscope">
+        update loc_openscope
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="openscopeContainerId != null">openscope_container_id = #{openscopeContainerId},</if>
+            <if test="openscopeRuletableId != null">openscope_ruletable_id = #{openscopeRuletableId},</if>
+            <if test="openscopeRuleId != null">openscope_rule_id = #{openscopeRuleId},</if>
+        </trim>
+        where openscope_id = #{openscopeId}
+    </update>
+
+    <delete id="deleteLocOpenscopeById" parameterType="Long">
+        delete from loc_openscope where openscope_id = #{openscopeId}
+    </delete>
+
+    <delete id="deleteLocOpenscopeByIds" parameterType="String">
+        delete from loc_openscope where openscope_id in 
+        <foreach item="openscopeId" collection="array" open="(" separator="," close=")">
+            #{openscopeId}
+        </foreach>
+    </delete>
+
+</mapper>

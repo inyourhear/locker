@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.locker.mapper.LocBlacklistMapper">
+    
+    <resultMap type="LocBlacklist" id="LocBlacklistResult">
+        <result property="id"    column="id"    />
+        <result property="blacklistId"    column="blacklist_id"    />
+        <result property="blacklistReason"    column="blacklist_reason"    />
+    </resultMap>
+
+    <sql id="selectLocBlacklistVo">
+        select id, blacklist_id, blacklist_reason from loc_blacklist
+    </sql>
+
+    <select id="selectLocBlacklistList" parameterType="LocBlacklist" resultMap="LocBlacklistResult">
+        <include refid="selectLocBlacklistVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="blacklistId != null "> and blacklist_id = #{blacklistId}</if>
+            <if test="blacklistReason != null  and blacklistReason != ''"> and blacklist_reason = #{blacklistReason}</if>
+        </where>
+    </select>
+    
+    <select id="selectLocBlacklistById" parameterType="Integer" resultMap="LocBlacklistResult">
+        <include refid="selectLocBlacklistVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertLocBlacklist" parameterType="LocBlacklist" useGeneratedKeys="true" keyProperty="id">
+        insert into loc_blacklist
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="blacklistId != null">blacklist_id,</if>
+            <if test="blacklistReason != null and blacklistReason != ''">blacklist_reason,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="blacklistId != null">#{blacklistId},</if>
+            <if test="blacklistReason != null and blacklistReason != ''">#{blacklistReason},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLocBlacklist" parameterType="LocBlacklist">
+        update loc_blacklist
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="blacklistId != null">blacklist_id = #{blacklistId},</if>
+            <if test="blacklistReason != null and blacklistReason != ''">blacklist_reason = #{blacklistReason},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLocBlacklistById" parameterType="Integer">
+        delete from loc_blacklist where id = #{id}
+    </delete>
+
+    <delete id="deleteLocBlacklistByIds" parameterType="String">
+        delete from loc_blacklist where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
